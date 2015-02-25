@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/crcn/nexe](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/crcn/nexe?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Dependency Status](https://david-dm.org/crcn/nexe.svg)](https://david-dm.org/crcn/nexe)
 
-Nexe is a command-line utility that compiles your Node.js application into a single executable file.
+Nexe is a command-line utility that compiles your Node.js application into a single executable file
 
 ![screen shot 2014-02-28 at 10 32 54 am](https://f.cloud.github.com/assets/757408/2296993/c276f7b6-a0a6-11e3-86d3-e6c5feba2a85.png)
 
@@ -90,7 +90,7 @@ Note: &#95;&#95;filename will be 'undefined'
 
 ### child_process.fork
 
-child_process.spawn works is unmodified, but child_process.fork will make an attempt to lunch a new instance of your executable and run the bundled module.
+child_process.spawn works is unmodified, but child_process.fork will make an attempt to launch a new instance of your executable and run the bundled module.
 
 ## Installation
 
@@ -105,6 +105,22 @@ Or git:
 ```bash
 	git clone https://github.com/crcn/nexe.git
 ```
+
+### App Field Usage
+
+```javascript
+"app": {
+    "entry": "./app.js",
+    "output": "./release/app.nex",
+    "dependencies": {
+      	"filter": {
+        	"./conf/app.json": false,
+    	}
+    }
+}
+```
+
+Full docs: [app field spec for package.json](https://gist.github.com/CKarper/6dad750717297c070d3e)
 
 ### CLI Usage
 
