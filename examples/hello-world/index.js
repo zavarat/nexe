@@ -1,11 +1,10 @@
 var http = require("http"),
 fs = require("fs"),
 path = require("path"),
-nexeres = require("nexeres"),
 childProc = require("child_process"),
 port = 1337;
 
-//Fork a new process to execute the broser.js
+//Fork a new process to execute the browser.js
 childProc.fork(path.join(__dirname, "browser.js"));
 if (false) {
   require("./browser.js"); //force the bundler to include the .js file
