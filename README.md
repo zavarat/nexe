@@ -106,7 +106,9 @@ Or git:
 	git clone https://github.com/crcn/nexe.git
 ```
 
-### App Field Usage
+## Usage
+
+### App Field
 
 ```javascript
 "app": {
@@ -122,7 +124,7 @@ Or git:
 
 Full docs: [app field spec for package.json](https://gist.github.com/CKarper/6dad750717297c070d3e)
 
-### CLI Usage
+### CLI
 
 ```text
 
@@ -140,7 +142,7 @@ Options:
 ```
 
 
-### Code Usage
+### Code
 
 ```javascript
 
