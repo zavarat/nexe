@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>nexe by jaredallard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">nexe</h1>
+      <h2 class="project-tagline">Create a single executable out of your node.js app</h2>
+      <a href="https://github.com/jaredallard/nexe" class="btn">View on GitHub</a>
+      <a href="https://github.com/jaredallard/nexe/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/jaredallard/nexe/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="nexe" class="anchor" href="#nexe" aria-hidden="true"><span class="octicon octicon-link"></span></a>Nexe</h2>
+
+<p><a href="https://gitter.im/crcn/nexe?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/crcn/nexe"></a> <a href="https://david-dm.org/crcn/nexe"><img src="https://david-dm.org/crcn/nexe.svg" alt="Dependency Status"></a>
+<a href="http://waffle.io/crcn/nexe"><img src="https://badge.waffle.io/crcn/nexe.svg?label=ready&amp;title=Ready" alt="Stories in Ready"></a></p>
+
+<p>Nexe is a command-line utility that compiles your Node.js application into a single executable file.</p>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
+
+<pre><code>npm install -g nexe
+</code></pre>
+
+<h3>
+<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation</h3>
+
+<ul>
+<li>Ability to run multiple applications with <em>different</em> node.js runtimes.</li>
+<li>Distributable binaries without needing node / npm.</li>
+<li>Starts faster.</li>
+<li>Lockdown specific application versions, and easily rollback.</li>
+<li>Faster deployments.</li>
+</ul>
+
+<h2>
+<a id="building-requirements" class="anchor" href="#building-requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building Requirements</h2>
+
+<ul>
+<li>Linux / Mac / BSD / Windows</li>
+<li>Python 2.6 or 2.7 (use --python if not in PATH)</li>
+<li>Windows: Visual Studio 2010+</li>
+</ul>
+
+<h2>
+<a id="caveats" class="anchor" href="#caveats" aria-hidden="true"><span class="octicon octicon-link"></span></a>Caveats</h2>
+
+<h3>
+<a id="doesnt-support-native-modules" class="anchor" href="#doesnt-support-native-modules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Doesn't support native modules</h3>
+
+<ul>
+<li>Use the techniques below for working around dynamic require statements to exclude the module from the bundling, and deploy along side the executable in a node_module folder so your app can find it. Note: On windows you may need to have your app be named node.exe if .node file depends on node.</li>
+</ul>
+
+<h3>
+<a id="doesnt-support-dynamic-require-statements" class="anchor" href="#doesnt-support-dynamic-require-statements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Doesn't support dynamic require statements</h3>
+
+<p>Such As:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> x <span class="pl-k">=</span> <span class="pl-c1">require</span>(someVar);</pre></div>
+
+<p>In this case nexe won't bundle the file</p>
+
+<div class="highlight highlight-javascript"><pre>    <span class="pl-k">var</span> x;
+    <span class="pl-k">if</span> (someCheck) {
+        x <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>./ver1.js<span class="pl-pds">"</span></span>);
+    } <span class="pl-k">else</span> {
+        x <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>./var2.js<span class="pl-pds">"</span></span>);
+    }</pre></div>
+
+<p>In this case nexe will bundle both files.</p>
+
+<p>Workarounds:
+1) for dynamic requires that you want bundled add the following into your project</p>
+
+<div class="highlight highlight-javascript"><pre>    <span class="pl-k">var</span> dummyToForceIncludeForBundle <span class="pl-k">=</span> <span class="pl-c1">false</span>;
+    <span class="pl-k">if</span> (dummyToForceIncludeForBundle) {
+        <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>./loadedDynamicallyLater.js<span class="pl-pds">"</span></span>);
+        <span class="pl-c">// ...</span>
+    }</pre></div>
+
+<p>this will trick the bundler into including them.</p>
+
+<p>2) for dynamic files getting included that you don't want to be</p>
+
+<div class="highlight highlight-javascript"><pre>    <span class="pl-k">var</span> moduleName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>./ver2.js<span class="pl-pds">"</span></span>;
+    <span class="pl-k">if</span> (someCheck) {
+        moduleName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>./ver1.js<span class="pl-pds">"</span></span>;
+    }
+    <span class="pl-k">var</span> x <span class="pl-k">=</span> <span class="pl-c1">require</span>(moduleName);</pre></div>
+
+<p>Note: neither file will be bundled.</p>
+
+<p>Using these two techniques you can change your application code so modules are not bundles, and generate a includes.js file as part of your build process so that the right files get bundled for your build configuration.</p>
+
+<h3>
+<a id="__dirname" class="anchor" href="#__dirname" aria-hidden="true"><span class="octicon octicon-link"></span></a>__dirname</h3>
+
+<p>Once the module is bundled it is part of the executable. __dirname is therefore the executable dir (process.execPath). Thus if you put resources on a relative path from the the executable your app will be able to access them.</p>
+
+<p>If you had a data file at <code>/dev/myNodeApp/stateManager/handler/data/some.csv</code>
+and a file at <code>/dev/myNodeApp/stateManager/handler/loader.js</code></p>
+
+<div class="highlight highlight-javascript"><pre>    <span class="pl-c1">module</span>.exports <span class="pl-k">=</span> fw.readFileSync(path.<span class="pl-c1">join</span>(<span class="pl-c1">__dirname</span>, <span class="pl-s"><span class="pl-pds">"</span>./data/some.csv<span class="pl-pds">"</span></span>));</pre></div>
+
+<p>You would need to deploy some.csv in a sub dir <code>data/</code> along side your executable</p>
+
+<p>There are potential use cases for __dirname where the executable path is not the correct substitution, and could result in a silent error (possibly even in a dependency that you are unaware of).</p>
+
+<p>Note: __filename will be 'undefined'</p>
+
+<h3>
+<a id="child_processfork" class="anchor" href="#child_processfork" aria-hidden="true"><span class="octicon octicon-link"></span></a>child_process.fork</h3>
+
+<p>child_process.spawn works is unmodified, but child_process.fork will make an attempt to launch a new instance of your executable and run the bundled module.</p>
+
+<h2>
+<a id="installation-1" class="anchor" href="#installation-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Via NPM:</p>
+
+<div class="highlight highlight-bash"><pre>    npm install nexe [-g]</pre></div>
+
+<p>Or git:</p>
+
+<div class="highlight highlight-bash"><pre>    git clone https://github.com/crcn/nexe.git</pre></div>
+
+<h3>
+<a id="cli-usage" class="anchor" href="#cli-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>CLI Usage</h3>
+
+<pre lang="text"><code>
+Usage: nexe -i [sources] -o [binary] [options]
+
+Options:
+    -i, --input    The entry javascript files         [default: cwd]
+    -o, --output   The output binary                  [default: out.nex]
+    -r, --runtime  The node.js runtime to use         [default: "latest"]
+    -t, --temp     The path to store node.js sources  [default: ./tmp/nexe]
+    -f, --flags    Don't parse node and v8 flags, pass through app flags  [default: false]
+    -v, --version  Display version number
+    -p, --python   Set path of python to use.         [default: "python"]
+    -F, --framework Set the framework to use.          [default: "nodejs"]
+
+</code></pre>
+
+<h3>
+<a id="code-usage" class="anchor" href="#code-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code Usage</h3>
+
+<div class="highlight highlight-javascript"><pre>
+<span class="pl-k">var</span> nexe <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>nexe<span class="pl-pds">'</span></span>);
+
+nexe.<span class="pl-c1">compile</span>({
+    input<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>input.js<span class="pl-pds">'</span></span>,
+    output<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>path/to/bin<span class="pl-pds">'</span></span>,
+    nodeVersion<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>0.12.5<span class="pl-pds">'</span></span>,
+    nodeTempDir<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>src<span class="pl-pds">'</span></span>,
+    python<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>path/to/python<span class="pl-pds">'</span></span>,
+    resourceFiles<span class="pl-k">:</span> [ <span class="pl-s"><span class="pl-pds">'</span>path/to/a/file<span class="pl-pds">'</span></span> ],
+    flags<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+    framework<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>nodejs<span class="pl-pds">"</span></span>
+}, <span class="pl-k">function</span>(<span class="pl-smi">err</span>) {
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(err);
+});
+</pre></div>
+
+<h3>
+<a id="packagejson-inclusion" class="anchor" href="#packagejson-inclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>package.json inclusion</h3>
+
+<p>As of 0.4.0 you can now embed nexe options into package.json. Note that this Format
+is still in works, so it is likely to change.</p>
+
+<pre><code>"nexe": {
+    "input": "./bin/nexe",
+    "output": "nexe^$",
+    "temp": "src",
+    "runtime": {
+        "framework": "iojs",
+        "version": "2.3.1",
+        "ignoreFlags": true
+    }
+}
+</code></pre>
+
+<p>Notes:</p>
+
+<ul>
+<li>output: can use ^$ for platform specific file extension</li>
+</ul>
+
+<h2>
+<a id="maintainers" class="anchor" href="#maintainers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maintainers</h2>
+
+<ul>
+<li>
+<strong>Jared Allard</strong> (<a href="https://github.com/jaredallard">@jaredallard</a>) &lt;<a href="mailto:jaredallard@outlook.com">jaredallard@outlook.com</a>&gt; (Active)</li>
+<li>
+<strong>Christopher Karper</strong> (<a href="https://github.com/CKarper">@ckarper</a>) &lt;<a href="mailto:Christopher.Karper@gmail.com">Christopher.Karper@gmail.com</a>&gt; (Active)</li>
+<li>
+<strong>Craig Jefferds</strong> (<a href="https://github.com/crcn">@crcn</a>) &lt;<a href="mailto:craig.j.condon@gmail.com">craig.j.condon@gmail.com</a>&gt; (Not Active)</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/jaredallard/nexe">nexe</a> is maintained by <a href="https://github.com/jaredallard">jaredallard</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
