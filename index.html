@@ -19,13 +19,18 @@
     </section>
 
     <section class="main-content">
-      <h2>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+      <h3>
+<a id="nexe" class="anchor" href="#nexe" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nexe</h3>
 
-<div class="highlight highlight-bash"><pre>npm install nexe [-g]</pre></div>
+<p><a href="https://gitter.im/jaredallard/nexe?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/crcn/nexe"></a> <a href="https://david-dm.org/crcn/nexe"><img src="https://david-dm.org/jaredallard/nexe.svg" alt="Dependency Status"></a>
+<a href="http://waffle.io/jaredallard/nexe"><img src="https://badge.waffle.io/jaredallard/nexe.svg?label=ready&amp;title=Ready" alt="Stories in Ready"></a></p>
+
+<p>Nexe is a command-line utility that compiles your Node.js application into a single executable file.</p>
+
+<p><img src="https://f.cloud.github.com/assets/757408/2296993/c276f7b6-a0a6-11e3-86d3-e6c5feba2a85.png" alt="screen shot 2014-02-28 at 10 32 54 am"></p>
 
 <h3>
-<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation</h3>
+<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Motivation</h3>
 
 <ul>
 <li>Ability to run multiple applications with <em>different</em> node.js runtimes.</li>
@@ -36,7 +41,7 @@
 </ul>
 
 <h2>
-<a id="building-requirements" class="anchor" href="#building-requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building Requirements</h2>
+<a id="building-requirements" class="anchor" href="#building-requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building Requirements</h2>
 
 <ul>
 <li>Linux / Mac / BSD / Windows</li>
@@ -45,25 +50,25 @@
 </ul>
 
 <h2>
-<a id="caveats" class="anchor" href="#caveats" aria-hidden="true"><span class="octicon octicon-link"></span></a>Caveats</h2>
+<a id="caveats" class="anchor" href="#caveats" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Caveats</h2>
 
 <h3>
-<a id="doesnt-support-native-modules" class="anchor" href="#doesnt-support-native-modules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Doesn't support native modules</h3>
+<a id="doesnt-support-native-modules" class="anchor" href="#doesnt-support-native-modules" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Doesn't support native modules</h3>
 
 <ul>
 <li>Use the techniques below for working around dynamic require statements to exclude the module from the bundling, and deploy along side the executable in a node_module folder so your app can find it. Note: On windows you may need to have your app be named node.exe if .node file depends on node.</li>
 </ul>
 
 <h3>
-<a id="doesnt-support-dynamic-require-statements" class="anchor" href="#doesnt-support-dynamic-require-statements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Doesn't support dynamic require statements</h3>
+<a id="doesnt-support-dynamic-require-statements" class="anchor" href="#doesnt-support-dynamic-require-statements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Doesn't support dynamic require statements</h3>
 
 <p>Such As:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> x <span class="pl-k">=</span> <span class="pl-c1">require</span>(someVar);</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> x <span class="pl-k">=</span> <span class="pl-c1">require</span>(someVar);</pre></div>
 
 <p>In this case nexe won't bundle the file</p>
 
-<div class="highlight highlight-javascript"><pre>    <span class="pl-k">var</span> x;
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> x;
     <span class="pl-k">if</span> (someCheck) {
         x <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>./ver1.js<span class="pl-pds">"</span></span>);
     } <span class="pl-k">else</span> {
@@ -75,7 +80,7 @@
 <p>Workarounds:
 1) for dynamic requires that you want bundled add the following into your project</p>
 
-<div class="highlight highlight-javascript"><pre>    <span class="pl-k">var</span> dummyToForceIncludeForBundle <span class="pl-k">=</span> <span class="pl-c1">false</span>;
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> dummyToForceIncludeForBundle <span class="pl-k">=</span> <span class="pl-c1">false</span>;
     <span class="pl-k">if</span> (dummyToForceIncludeForBundle) {
         <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>./loadedDynamicallyLater.js<span class="pl-pds">"</span></span>);
         <span class="pl-c">// ...</span>
@@ -85,7 +90,7 @@
 
 <p>2) for dynamic files getting included that you don't want to be</p>
 
-<div class="highlight highlight-javascript"><pre>    <span class="pl-k">var</span> moduleName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>./ver2.js<span class="pl-pds">"</span></span>;
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> moduleName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>./ver2.js<span class="pl-pds">"</span></span>;
     <span class="pl-k">if</span> (someCheck) {
         moduleName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>./ver1.js<span class="pl-pds">"</span></span>;
     }
@@ -96,14 +101,14 @@
 <p>Using these two techniques you can change your application code so modules are not bundles, and generate a includes.js file as part of your build process so that the right files get bundled for your build configuration.</p>
 
 <h3>
-<a id="__dirname" class="anchor" href="#__dirname" aria-hidden="true"><span class="octicon octicon-link"></span></a>__dirname</h3>
+<a id="__dirname" class="anchor" href="#__dirname" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>__dirname</h3>
 
 <p>Once the module is bundled it is part of the executable. __dirname is therefore the executable dir (process.execPath). Thus if you put resources on a relative path from the the executable your app will be able to access them.</p>
 
 <p>If you had a data file at <code>/dev/myNodeApp/stateManager/handler/data/some.csv</code>
 and a file at <code>/dev/myNodeApp/stateManager/handler/loader.js</code></p>
 
-<div class="highlight highlight-javascript"><pre>    <span class="pl-c1">module</span>.exports <span class="pl-k">=</span> fw.readFileSync(path.<span class="pl-c1">join</span>(<span class="pl-c1">__dirname</span>, <span class="pl-s"><span class="pl-pds">"</span>./data/some.csv<span class="pl-pds">"</span></span>));</pre></div>
+<div class="highlight highlight-source-js"><pre>    <span class="pl-smi">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> <span class="pl-smi">fw</span>.<span class="pl-en">readFileSync</span>(<span class="pl-smi">path</span>.<span class="pl-c1">join</span>(<span class="pl-c1">__dirname</span>, <span class="pl-s"><span class="pl-pds">"</span>./data/some.csv<span class="pl-pds">"</span></span>));</pre></div>
 
 <p>You would need to deploy some.csv in a sub dir <code>data/</code> along side your executable</p>
 
@@ -112,12 +117,23 @@ and a file at <code>/dev/myNodeApp/stateManager/handler/loader.js</code></p>
 <p>Note: __filename will be 'undefined'</p>
 
 <h3>
-<a id="child_processfork" class="anchor" href="#child_processfork" aria-hidden="true"><span class="octicon octicon-link"></span></a>child_process.fork</h3>
+<a id="child_processfork" class="anchor" href="#child_processfork" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>child_process.fork</h3>
 
 <p>child_process.spawn works is unmodified, but child_process.fork will make an attempt to launch a new instance of your executable and run the bundled module.</p>
 
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Via NPM:</p>
+
+<div class="highlight highlight-source-shell"><pre>    npm install nexe [-g]</pre></div>
+
+<p>Or git:</p>
+
+<div class="highlight highlight-source-shell"><pre>    git clone https://github.com/crcn/nexe.git</pre></div>
+
 <h3>
-<a id="cli-usage" class="anchor" href="#cli-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>CLI Usage</h3>
+<a id="cli-usage" class="anchor" href="#cli-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CLI Usage</h3>
 
 <pre lang="text"><code>
 Usage: nexe -i [sources] -o [binary] [options]
@@ -135,51 +151,59 @@ Options:
 </code></pre>
 
 <h3>
-<a id="code-usage" class="anchor" href="#code-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code Usage</h3>
+<a id="code-usage" class="anchor" href="#code-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Code Usage</h3>
 
-<div class="highlight highlight-javascript"><pre>
+<div class="highlight highlight-source-js"><pre>
 <span class="pl-k">var</span> nexe <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>nexe<span class="pl-pds">'</span></span>);
 
-nexe.<span class="pl-c1">compile</span>({
-    input<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>input.js<span class="pl-pds">'</span></span>,
-    output<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>path/to/bin<span class="pl-pds">'</span></span>,
-    nodeVersion<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>0.12.5<span class="pl-pds">'</span></span>,
-    nodeTempDir<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>src<span class="pl-pds">'</span></span>,
-    python<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>path/to/python<span class="pl-pds">'</span></span>,
-    resourceFiles<span class="pl-k">:</span> [ <span class="pl-s"><span class="pl-pds">'</span>path/to/a/file<span class="pl-pds">'</span></span> ],
-    flags<span class="pl-k">:</span> <span class="pl-c1">true</span>,
-    framework<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>nodejs<span class="pl-pds">"</span></span>
+<span class="pl-smi">nexe</span>.<span class="pl-c1">compile</span>({
+    input<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>input.js<span class="pl-pds">'</span></span>, <span class="pl-c">// where the input file is</span>
+    output<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>path/to/bin<span class="pl-pds">'</span></span>, <span class="pl-c">// where to output the compiled binary</span>
+    nodeVersion<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>5.5.0<span class="pl-pds">'</span></span>, <span class="pl-c">// node version</span>
+    nodeTempDir<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>src<span class="pl-pds">'</span></span>, <span class="pl-c">// where to store node source.</span>
+    nodeConfigureArgs<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>opt<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>val<span class="pl-pds">'</span></span>], <span class="pl-c">// for all your configure arg needs.</span>
+    nodeMakeArgs<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">"</span>-j<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>4<span class="pl-pds">"</span></span>], <span class="pl-c">// when you want to control the make process.</span>
+    python<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>path/to/python<span class="pl-pds">'</span></span>, <span class="pl-c">// for non-standard python setups. Or python 3.x forced ones.</span>
+    resourceFiles<span class="pl-k">:</span> [ <span class="pl-s"><span class="pl-pds">'</span>path/to/a/file<span class="pl-pds">'</span></span> ], <span class="pl-c">// array of files to embed.</span>
+    flags<span class="pl-k">:</span> <span class="pl-c1">true</span>, <span class="pl-c">// use this for applications that need command line flags.</span>
+    jsFlags<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>--use_strict<span class="pl-pds">"</span></span>, <span class="pl-c">// v8 flags</span>
+    framework<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>node<span class="pl-pds">"</span></span> <span class="pl-c">// node, nodejs, or iojs</span>
 }, <span class="pl-k">function</span>(<span class="pl-smi">err</span>) {
-    <span class="pl-en">console</span><span class="pl-c1">.log</span>(err);
+    <span class="pl-k">if</span>(err) {
+        <span class="pl-k">return</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err);
+    }
+
+     <span class="pl-c">// do whatever</span>
 });
 </pre></div>
 
 <h3>
-<a id="packagejson-inclusion" class="anchor" href="#packagejson-inclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>package.json inclusion</h3>
+<a id="packagejson-inclusion" class="anchor" href="#packagejson-inclusion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>package.json inclusion</h3>
 
 <p>As of 0.4.0 you can now embed nexe options into package.json. Note that this Format
 is still in works, so it is likely to change.</p>
 
-<pre><code>"nexe": {
-    "input": "./bin/nexe",
-    "output": "nexe^$",
-    "temp": "src",
-    "runtime": {
-        "framework": "iojs",
-        "version": "2.3.1",
-        "ignoreFlags": true
+<div class="highlight highlight-source-json"><pre><span class="pl-s"><span class="pl-pds">"</span>nexe<span class="pl-pds">"</span></span>: {
+    <span class="pl-s"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>./bin/nexe<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>output<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>nexe^$<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>temp<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>src<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>runtime<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>framework<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>node<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>5.5.0<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>js-flags<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>--use_strict<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>ignoreFlags<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>
     }
-}
-</code></pre>
+}</pre></div>
 
 <p>Notes:</p>
 
 <ul>
 <li>output: can use ^$ for platform specific file extension</li>
+<li>js-flags: this is also known as v8 flags, and supports <em>all</em> v8 flags.</li>
 </ul>
 
 <h2>
-<a id="maintainers" class="anchor" href="#maintainers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maintainers</h2>
+<a id="maintainers" class="anchor" href="#maintainers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maintainers</h2>
 
 <ul>
 <li>
@@ -187,7 +211,7 @@ is still in works, so it is likely to change.</p>
 <li>
 <strong>Christopher Karper</strong> (<a href="https://github.com/CKarper">@ckarper</a>) &lt;<a href="mailto:Christopher.Karper@gmail.com">Christopher.Karper@gmail.com</a>&gt; (Active)</li>
 <li>
-<strong>Craig Jefferds</strong> (<a href="https://github.com/crcn">@crcn</a>) &lt;<a href="mailto:craig.j.condon@gmail.com">craig.j.condon@gmail.com</a>&gt; (Not Active)</li>
+<strong>Craig Condon</strong> (<a href="https://github.com/crcn">@crcn</a>) &lt;<a href="mailto:craig.j.condon@gmail.com">craig.j.condon@gmail.com</a>&gt; (Old Project Owner)</li>
 </ul>
 
       <footer class="site-footer">
