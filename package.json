@@ -31,7 +31,7 @@
     "jspm": "^0.16.34",
     "mkdirp": "^0.5.1",
     "module-deps": "^4.0.5",
-    "node-status": "^0.1.7",
+    "node-status": "^1.0.0",
     "request": "^2.72.0",
     "tar-stream": "^1.5.2",
     "through": "^2.3.8",

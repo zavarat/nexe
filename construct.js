@@ -69,13 +69,27 @@ class Nexe {
       throw 'Detected nexe v1 style of usage. Please use v2.'
     }
   }
+
+  /**
+   * Download, extract, and setup a version of node.
+   *
+   * @param {Integer} node_version - version of node to use. latest, for latest.
+   * @param {Function} done        - callback.
+   *
+   * @returns {undefined} undefined
+   **/
+  setup(node_version, done) {
+    if(!done) done = () => {}; // defaults.
+  }
+
 }
 
 
 let nexe = new Nexe({
   input: './something.js',
   output: 'out.nexe',
-  temp: './temp'
+  temp: './temp',
+  python: '/usr/bin/python2'
 });
 
 
@@ -86,9 +100,9 @@ nexe.libs.download.downloadNode('latest', (err, location) => {
 
   console.log('Node.JS Download to:', location);
 
-  nexe.libs.download.extractNode('latest', (err, location) => {
+  nexe.libs.download.extractNode((err, location, version) => {
     console.log('Node.JS Extracted.');
-
+    console.log('Node.JS', 'version ->', version)
     let compfile = path.join(location, 'lib', 'nexe.js');
     nexe.libs.package.bundle('./test.js', compfile, 'browserify', err => {
       if(err) {
@@ -98,17 +112,17 @@ nexe.libs.download.downloadNode('latest', (err, location) => {
       console.log('successfully bundled the file.');
 
       // patch node.js to use nexe.
-      nexe.libs.patch.node('6.0.0', err => {
+      nexe.libs.patch.node(version, err => {
         if(err) {
           return console.error(err);
         }
 
-        nexe.libs.embed.files('6.0.0', [], '', {}, err => {
+        nexe.libs.embed.files(version, [], '', {}, err => {
           if(err) {
             return console.error(err);
           }
 
-          nexe.libs.compile.node('6.0.0', err => {
+          nexe.libs.compile.node(version, err => {
             if(err) {
               return console.error(err);
             }
