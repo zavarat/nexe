@@ -31,7 +31,7 @@ This uses `debug`
 
 ### construct.js
 
-The new file for constructing nexe! It supports, for now, the old nexe.compile method,
+The new file for constructing nexe! It supports, for now, the old `nexe.compile` method,
 but also has a new method. Construction:
 
 ```js
