@@ -4,7 +4,7 @@
   "description": "Create Single Executables out of your Node.js Apps.",
   "main": "construct.js",
   "scripts": {
-    "test": "mocha"
+    "test": "./node_modules/.bin/mocha --no-timeouts"
   },
   "repository": {
     "type": "git",
@@ -36,5 +36,9 @@
     "tar-stream": "^1.5.2",
     "through": "^2.3.8",
     "webpack": "^1.13.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
   }
 }

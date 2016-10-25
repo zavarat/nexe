@@ -44,6 +44,19 @@ let nexe = new Nexe({
 
 Which takes the old package.json format.
 
+## package.json
+
+New methods:
+
+```js
+{
+  "package_method": "browserify" // or nexe, soon to be webpack, and jspack.
+}
+```
+
+Since some packages work only with browserify or nexe's old packaging method, we support the ability to try both!
+
+
 # TODO
 
 * [ ] config: Implement `python`
