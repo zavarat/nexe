@@ -39,6 +39,35 @@ describe('Compile', () => {
       let out = res.output[1].toString();
 
       expect(out).to.equal('─┬┌┐─┴└┘│├─┼│┤│█░▒▓')
+
+      return done();
     });
+  })
+
+  it('config.onout can recieve output', done => {
+    let gotoutput = false;
+
+    const out = data => {
+      if(data) gotoutput = true;
+    };
+
+    let nexe = new Nexe({
+      input:  './test/compile/01-hw.js',
+      output: './test/compile/01',
+      onout: out,
+      python: '/usr/bin/python2',
+      version: '7.0.0',
+      temp:   './temp'
+    })
+
+    nexe.compile(err => {
+      if(err) return done(err);
+    });
+
+    setTimeout(() => {
+      if(!gotoutput) return done('Recieved no output in 5 seconds...')
+
+      return done();
+    }, 5000)
   })
 })
