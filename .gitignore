@@ -1,3 +1,5 @@
 node_modules
 temp
 compilied.js
+test/compile/01
+test/compile/02

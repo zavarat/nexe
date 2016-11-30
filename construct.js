@@ -10,7 +10,7 @@
 'use strict';
 
 const path  = require('path');
-const fs    = require('fs');
+const fs    = require('fs-extra');
 const async = require('async');
 const debug = require('debug')('nexe:wrapper');
 
@@ -62,7 +62,7 @@ class Nexe {
       }
 
       // link it unto the this class.
-      self.libs[LIB_NAME] = new LIB_CLASS(self.libs, self.config, DOWNLOAD_DIR);
+      self.libs[LIB_NAME] = new LIB_CLASS(self.libs, self.config, DOWNLOAD_DIR, self);
     });
 
 
@@ -81,6 +81,7 @@ class Nexe {
     if(this.config.test) return true;
 
     let VERSION = this.config.version || 'latest';
+    let location = null;
     async.waterfall([
       /**
        * Download a version of node.
@@ -99,7 +100,9 @@ class Nexe {
       /**
        * Bundle The Application.
        **/
-      (location, version, next) => {
+      (LOC, version, next) => {
+        location = LOC;
+
         let compfile = path.join(location, 'lib', 'nexe.js');
         this.libs.package.bundle(this.config.input, compfile, 'browserify', err => {
           return next(err, version);
@@ -125,6 +128,40 @@ class Nexe {
        **/
       (version, next) => {
         this.libs.compile.node(version, next);
+      },
+
+      /**
+       * Copy Binary
+       **/
+      (next) => {
+        let output = this.config.output;
+        let inputp = path.join(location, 'out/Release/node');
+
+        let exts = [
+          '',
+          '.exe'
+        ];
+
+        // Flip array for top-down ext preference.
+        exts.reverse();
+
+        let input;
+        exts.forEach(ext => {
+          let inputfile = path.join(inputp, ext);
+          if(fs.existsSync(inputfile)) {
+            input = inputfile;
+          }
+        })
+
+        if(!input) {
+          return next('Failed to compile Node.');
+        }
+
+        debug(input, '->', output)
+
+        fs.copySync(input, output);
+
+        return next();
       }
     ], err => {
       return done(err);

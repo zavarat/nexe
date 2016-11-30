@@ -1,4 +1,4 @@
-# nexe v2
+# nexe
 
 Create a single executable from your node.js application.
 
@@ -47,7 +47,7 @@ CLI may be removed / less feature focused in the near future.
 # Contributors
 
 * Jared Allard &lt;jaredallard@outlook.com&gt;
-* The awesome open source developers who submit bug reports and write PRs. I &lt;3 You 
+* The awesome open source developers who submit bug reports and write PRs. I &lt;3 You
 
 # License
 

@@ -5,10 +5,10 @@
 In an effort to reduce clatter and overall file size, I've made a system of
 loading "modules" and instancing them.
 
-Every file in ./lib is loaded into nexe.libs. Each module is instanced with two
+Every file in ./lib is loaded into `nexe.libs`. Each module is instanced with two
 objects (accessible via constructor), `(libs, config)`.
 
-`libs` - access to the nexe.libs object, to allow modules to interact with one
+`libs` - access to the `nexe.libs` object, to allow modules to interact with one
 another.
 
 `config` - config object that nexe was instanced with.
@@ -23,11 +23,13 @@ It provides `1` method:
 
 This uses `debug`
 
+**Note**: In order to view this output, you must set the env variable `DEBUG` to `nexe*`
+
 
 ### libs/download.js
 
-* Downloads are now stored $TEMP/<framework>/<version> instead of $TEMP/<framework>/<version>/node-v<version>
-* Node latest version no longer returns actual version in directory structure.
+Same behaviour, different methods.
+
 
 ### construct.js
 
@@ -60,6 +62,7 @@ Since some packages work only with browserify or nexe's old packaging method, we
 # TODO
 
 * [x] config: Implement `python`
-* [ ] config: Implement ``
 * [x] download: fix node extract first time version resolve bug
 * [ ] compile: copy generated executable to output.
+* [ ] compile: implement copying binary from out/Release/node(.ext) to ouput.
+* [ ] compile: pass base dir of code through compile chain.
