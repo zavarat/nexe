@@ -42,6 +42,11 @@ class Nexe {
       config.temp = path.join(__dirname, config.temp);
     }
 
+    // If not absolute, use from CWD.
+    let DOWNLOAD_DIR = config.temp;
+    if(!path.isAbsolute(config.temp)) {
+      DOWNLOAD_DIR   = path.join(process.cwd(), config.temp);
+    }
 
     // Load our libraries, use sync because bad to use async in constructors
     let libs = fs.readdirSync(LIB_DIR);
@@ -53,14 +58,7 @@ class Nexe {
 
       // Require and the instance the lib.
       let LIB_CLASS    = require(LIB_PATH);
-
-      let DOWNLOAD_DIR = config.temp;
-
-      // If not absolute, use from CWD.
-      if(!path.isAbsolute(config.temp)) {
-        DOWNLOAD_DIR   = path.join(process.cwd(), config.temp);
-      }
-
+      
       // link it unto the this class.
       self.libs[LIB_NAME] = new LIB_CLASS(self.libs, self.config, DOWNLOAD_DIR, self);
     });
