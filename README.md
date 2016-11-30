@@ -33,11 +33,24 @@ let nexe = new Nexe({ /* options */ });
 
 ## Migrating from v1 to v2
 
-`nexe.compile` has been deprecated, but still works. It'll be removed in the next
-2.x release.
+`nexe` is now a class, you must instance it before being able to use `<instance>.compile`
+
+i.e
+
+```js
+const Nexe = require('nexe');
+
+let nexe = new Nexe(/** options **/);
+
+nexe.compile(callback) // etc
+```
+
+Using `nexe.compile` without instancing has been deprecated, but still works.
+It'll be removed in the next 2.x release.
 
 `nexe.compile` will take the same options as the package.json format, supports the
 old ones until the next 2.x release.
+
 
 Nexe no longer supports iojs :(
 
